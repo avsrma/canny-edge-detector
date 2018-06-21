@@ -1,0 +1,37 @@
+import cv2
+
+# This function is needed for the createTrackbar step downstream 
+def nothing(x):
+    pass
+
+# Read the image
+
+#img = cv2.imread('yourfilepath')
+img = cv2.imread(raw_input('Enter Image Path:'))
+
+# Create a trackbar for threshold changes in canny edge detector
+cv2.namedWindow('canny')
+
+
+# Create lower and upper trackbars
+cv2.createTrackbar('lower', 'canny', 0, 255, nothing)
+cv2.createTrackbar('upper', 'canny', 0, 255, nothing)
+
+
+# Infinite loop until we hit the escape key on keyboard
+while(1):
+
+    # Get current positions of four trackbars
+    lower = cv2.getTrackbarPos('lower', 'canny')
+    upper = cv2.getTrackbarPos('upper', 'canny')
+    
+    edges = cv2.Canny(img, lower, upper)
+
+    # Display
+    cv2.imshow('original', img)
+    cv2.imshow('canny', edges)
+    k = cv2.waitKey(1) & 0xFF
+    if k == 27:   # Hit escape to quit
+        break
+
+cv2.destroyAllWindows()
